@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyager - Travel Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a4d2e;
+            --secondary: #d4af37;
+            --accent: #ff6b35;
+            --dark: #0f1419;
+            --light: #faf8f3;
+            --cream: #f5f1e8;
+            --shadow: rgba(26, 77, 46, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(250, 248, 243, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            border-bottom: 1px solid rgba(26, 77, 46, 0.1);
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-cta {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+
+        .nav-cta:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 4rem;
+            padding: 4rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .hero-content {
+            animation: fadeInLeft 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: var(--cream);
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--secondary);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: var(--secondary);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #5a5a5a;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(26, 77, 46, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(26, 77, 46, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--dark);
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--dark);
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark);
+            color: white;
+        }
+
+        .hero-visual {
+            position: relative;
+            animation: fadeInRight 0.8s ease 0.4s both;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .travel-card {
+            background: white;
+            border-radius: 30px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(26, 77, 46, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        .status-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .trip-details {
+            background: var(--cream);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .trip-route {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .location {
+            flex: 1;
+            text-align: center;
+        }
+
+        .location-code {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .location-name {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .route-arrow {
+            width: 60px;
+            height: 2px;
+            background: var(--secondary);
+            position: relative;
+        }
+
+        .route-arrow::after {
+            content: '→';
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+
+        .trip-date {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 15px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 15px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .card-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .card-btn-primary:hover {
+            background: #153d24;
+            transform: translateY(-2px);
+        }
+
+        .card-btn-secondary {
+            background: var(--cream);
+            color: var(--dark);
+        }
+
+        .card-btn-secondary:hover {
+            background: #e8e4d8;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 5%;
+            background: white;
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            color: var(--secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: var(--light);
+            padding: 2.5rem;
+            border-radius: 25px;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), #2a6f46);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 25px rgba(26, 77, 46, 0.2);
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .footer-brand p {
+            color: #aaa;
+            line-height: 1.7;
+        }
+
+        .footer-links h4 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            text-align: center;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .cta-group {
+                justify-content: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Voyager</div>
+            <ul class="nav-links">
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#bookings">Bookings</a></li>
+                <li><a href="#reports">Reports</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
+            <a href="#login" class="nav-cta">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">✈️ Enterprise Travel Platform</span>
+            <h1>Simplify Your <span class="highlight">Business Travel</span> Management</h1>
+            <p>Comprehensive platform to book, manage, and analyze corporate travel with real-time insights and seamless integrations.</p>
+            <div class="cta-group">
+                <a href="#demo" class="btn-primary">Request Demo</a>
+                <a href="#features" class="btn-secondary">Explore Features</a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="travel-card">
+                <div class="card-header">
+                    <h3>Upcoming Trip</h3>
+                    <span class="status-badge">Confirmed</span>
+                </div>
+                
+                <div class="trip-details">
+                    <div class="trip-route">
+                        <div class="location">
+                            <div class="location-code">NYC</div>
+                            <div class="location-name">New York</div>
+                        </div>
+                        <div class="route-arrow"></div>
+                        <div class="location">
+                            <div class="location-code">LON</div>
+                            <div class="location-name">London</div>
+                        </div>
+                    </div>
+                    <div class="trip-date">📅 March 15, 2026 • 8:30 AM</div>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat">
+                        <span class="stat-value">7h 35m</span>
+                        <span class="stat-label">Duration</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">BA 178</span>
+                        <span class="stat-label">Flight</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">32A</span>
+                        <span class="stat-label">Seat</span>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="card-btn card-btn-primary">View Details</button>
+                    <button class="card-btn card-btn-secondary">Manage</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <div class="section-tag">Why Choose Voyager</div>
+                <h2 class="section-title">Everything You Need in One Platform</h2>
+                <p class="section-subtitle">Streamline your corporate travel with powerful tools designed for modern businesses</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Booking</h3>
+                    <p>AI-powered recommendations for flights, hotels, and transportation that match your company policy and budget.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Expense Tracking</h3>
+                    <p>Automated expense reports with real-time tracking, receipt capture, and seamless integration with accounting systems.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Comprehensive insights into travel spending, trends, and opportunities for cost optimization across your organization.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Policy Compliance</h3>
+                    <p>Enforce company travel policies automatically with customizable rules and approval workflows.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Global Coverage</h3>
+                    <p>Access to worldwide inventory of flights, hotels, and services with 24/7 multilingual support.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Updates</h3>
+                    <p>Real-time notifications for flight changes, gate updates, and travel alerts to keep your team informed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>Voyager</h3>
+                <p>Empowering businesses with intelligent travel management solutions. Streamline bookings, control costs, and enhance traveler experience.</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#integrations">Integrations</a></li>
+                    <li><a href="#mobile">Mobile App</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#careers">Careers</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#help">Help Center</a></li>
+                    <li><a href="#docs">Documentation</a></li>
+                    <li><a href="#api">API Reference</a></li>
+                    <li><a href="#status">System Status</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Voyager Travel Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        let lastScroll = 0;
+        const nav = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Animate feature cards on scroll
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card').forEach((card) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Interactive card buttons
+        document.querySelectorAll('.card-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                
+                // Add ripple effect
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                
+                this.style.position = 'relative';
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+                
+                // Simulate action
+                console.log(`Action: ${action}`);
+                alert(`${action} functionality would be implemented here!`);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Dynamic date update
+        const updateTripDate = () => {
+            const tripDate = new Date();
+            tripDate.setDate(tripDate.getDate() + 30);
+            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+            const formattedDate = tripDate.toLocaleDateString('en-US', options);
+            
+            const dateElement = document.querySelector('.trip-date');
+            if (dateElement) {
+                const time = dateElement.textContent.split('•')[1];
+                dateElement.textContent = `📅 ${formattedDate} •${time}`;
+            }
+        };
+
+        updateTripDate();
+
+        // Console welcome message
+        console.log('%c🌍 Welcome to Voyager Travel Management System! ', 
+                   'background: #1a4d2e; color: #d4af37; font-size: 16px; padding: 10px;');
+        console.log('%cBuilt with modern web technologies', 
+                   'color: #666; font-size: 12px;');
+    </script>
+</body>
+</html>
